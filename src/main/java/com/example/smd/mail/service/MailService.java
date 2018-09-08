@@ -8,4 +8,8 @@ import java.util.List;
 public interface MailService {
 
     List<MailVo> getAll();
+
+    void Add(MailVo mailVo);
+
+    void sendMail(MailVo mailVo);
 }

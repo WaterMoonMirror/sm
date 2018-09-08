@@ -1,16 +1,12 @@
 package com.example.smd.mail.controller;
 
-import com.example.smd.mail.domain.MailDo;
 import com.example.smd.mail.service.MailService;
+import com.example.smd.mail.vo.MailVo;
 import com.example.smd.mail.vo.ResultVo;
-import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.constraints.Max;
 import java.util.List;
 
 @RestController
@@ -21,9 +17,29 @@ public class MailController {
     private MailService mailService;
 
     @GetMapping
-    public ResultVo getList(){
-        List<MailDo> mailAll = mailService.getAll();
+    public ResultVo<MailVo> getList(){
+        List<MailVo> mailAll = mailService.getAll();
         return ResultVo.success(mailAll);
     }
+
+    @PostMapping
+    public ResultVo<MailVo> add(MailVo mailVo){
+        mailService.Add(mailVo);
+        return ResultVo.success(mailVo);
+    }
+
+    @PostMapping("/{id}")
+    public ResultVo<MailVo> sendMail(@PathVariable String id, MailVo mailVo){
+        mailService.sendMail(mailVo);
+        return ResultVo.success(id);
+    }
+    @GetMapping("/index")
+    public ModelAndView index(){
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("mail_table");
+        return modelAndView;
+    }
+
+
 
 }
